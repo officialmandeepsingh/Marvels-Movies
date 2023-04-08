@@ -5,6 +5,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import coil.load
+import com.mandeep.marvelbook.R
 
 /**
  * App Name: Marvel Book
@@ -16,7 +17,10 @@ import coil.load
  **/
 
 infix fun ImageView.LoadImage(url: String) {
-    load(url.generateImgUrl())
+    load(url.generateImgUrl()){
+        placeholder(R.drawable.placeholder_movie_poster)
+    }
+
 }
 
 infix fun View.onClick(click: () -> Unit) {

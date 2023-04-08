@@ -4,4 +4,11 @@
     <style name="MoviesItemRoundCorners" parent="" >
         <item name="cornerSize">50dp</item>
     </style>
+
+    <style name="HeadingBold">
+        <item name="android:textSize">18sp</item>
+        <item name="android:lineHeight">10dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

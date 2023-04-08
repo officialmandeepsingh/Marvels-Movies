@@ -39,9 +39,9 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (Layo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindInitAdapters()
         bindInitViews()
         callAPI()
-        bindInitAdapters()
         bindListeners()
         bindObservers()
         initViewModels()

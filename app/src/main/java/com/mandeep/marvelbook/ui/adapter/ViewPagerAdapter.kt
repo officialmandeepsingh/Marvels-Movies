@@ -6,45 +6,27 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.mandeep.marvelbook.data.model.Movie
-import com.mandeep.marvelbook.databinding.ItemMoviesBinding
+import com.mandeep.marvelbook.databinding.ItemMovieBannerBinding
 import com.mandeep.marvelbook.util.extension.LoadImage
-import com.mandeep.marvelbook.util.extension.gone
-import com.mandeep.marvelbook.util.extension.visible
 
 /**
  * App Name: Marvel Book
  * Package Name: com.mandeep.marvelbook.ui.adapter
  * Author : Mandeep Singh
  * Email Id: officialmandeepsp@gmail.com
- * Date: Fri 07 Apr, 2023
+ * Date: Sat 08 Apr, 2023
  *
  **/
-class MoviesAdapter() : PagingDataAdapter<Movie, MoviesAdapter.MoviesViewHolder>(UserDiffUtil) {
-
-
-    inner class MoviesViewHolder(private val binding: ItemMoviesBinding) :
+class ViewPagerAdapter() :
+    PagingDataAdapter<Movie, ViewPagerAdapter.MoviesViewHolder>(MoviesAdapter.UserDiffUtil) {
+    inner class MoviesViewHolder(private val binding: ItemMovieBannerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie) {
             binding.apply {
                 movie.posterPath?.let { item.LoadImage(it) }
-                /*when(movie.adult){
-                    true -> ivIsAdult.visible()
-                    false -> ivIsAdult.gone()
-                    else -> ivIsAdult.gone()
-                }*/
             }
         }
     }
-
-    override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
-        val movie = getItem(position)
-        movie?.let { holder.bind(it) }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder =
-        MoviesViewHolder(
-            ItemMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
 
     object UserDiffUtil : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
@@ -59,4 +41,18 @@ class MoviesAdapter() : PagingDataAdapter<Movie, MoviesAdapter.MoviesViewHolder>
         }
 
     }
+
+    override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
+        val movie = getItem(position)
+        movie?.let { holder.bind(it) }
+    }
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): MoviesViewHolder =
+        MoviesViewHolder(
+            ItemMovieBannerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
+
 }
