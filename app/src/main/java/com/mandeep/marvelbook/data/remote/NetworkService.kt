@@ -4,6 +4,7 @@ import com.mandeep.marvelbook.data.model.BaseResponse
 import com.mandeep.marvelbook.data.model.Movie
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -31,5 +32,8 @@ interface NetworkService {
 
     @GET(ApiRoute.GET_UPCOMING)
     suspend fun getUpcomingMovies(@Query("page") key: Int): Response<BaseResponse<List<Movie>>>
+
+    @GET(ApiRoute.GET_DETAILS)
+    suspend fun getMovieDetail(@Path("movie_id") movieId: String): Response<Movie>
 
 }

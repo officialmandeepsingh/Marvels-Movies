@@ -9,6 +9,7 @@ import com.mandeep.marvelbook.data.model.Movie
 import com.mandeep.marvelbook.databinding.ItemMoviesBinding
 import com.mandeep.marvelbook.util.extension.LoadImage
 import com.mandeep.marvelbook.util.extension.gone
+import com.mandeep.marvelbook.util.extension.onClick
 import com.mandeep.marvelbook.util.extension.visible
 
 /**
@@ -19,25 +20,29 @@ import com.mandeep.marvelbook.util.extension.visible
  * Date: Fri 07 Apr, 2023
  *
  **/
-class MoviesAdapter() : PagingDataAdapter<Movie, MoviesAdapter.MoviesViewHolder>(UserDiffUtil) {
+class MoviesAdapter(private val clickOnMovie: (String) -> Unit) : PagingDataAdapter<Movie, MoviesAdapter.MoviesViewHolder>(UserDiffUtil) {
 
 
     inner class MoviesViewHolder(private val binding: ItemMoviesBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(movie: Movie) {
             binding.apply {
                 movie.posterPath?.let { item.LoadImage(it) }
+                root onClick {clickOnMovie(movie.id.toString())}
                 /*when(movie.adult){
                     true -> ivIsAdult.visible()
                     false -> ivIsAdult.gone()
                     else -> ivIsAdult.gone()
                 }*/
+
             }
         }
     }
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
         val movie = getItem(position)
+
         movie?.let { holder.bind(it) }
     }
 

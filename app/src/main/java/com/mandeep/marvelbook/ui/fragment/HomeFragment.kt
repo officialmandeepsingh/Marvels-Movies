@@ -3,6 +3,7 @@ package com.mandeep.marvelbook.ui.fragment
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +12,7 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.mandeep.marvelbook.R
+import com.mandeep.marvelbook.data.base.Resource
 import com.mandeep.marvelbook.databinding.FragmentHomeBinding
 import com.mandeep.marvelbook.ui.adapter.MoviesAdapter
 import com.mandeep.marvelbook.ui.adapter.ViewPagerAdapter
@@ -130,7 +132,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun initializeUpComingAdapter() {
-        upComingMovieAdapter = MoviesAdapter()
+        upComingMovieAdapter = MoviesAdapter(::onItemClicked)
         binding.layUpComingMovies.recyclerView.adapter = upComingMovieAdapter
     }
 
@@ -140,12 +142,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun initializeNowPlayingAdapter() {
-        nowPlayingMovieAdapter = MoviesAdapter()
+        nowPlayingMovieAdapter = MoviesAdapter(::onItemClicked)
         binding.layNowPlayingMovies.recyclerView.adapter = nowPlayingMovieAdapter
     }
 
     private fun initializePopularAdapter() {
-        popularMovieAdapter = MoviesAdapter()
+        popularMovieAdapter = MoviesAdapter(::onItemClicked)
         binding.layPopularMovies.recyclerView.adapter = popularMovieAdapter
     }
 
@@ -170,6 +172,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+    private  fun getMovieDetails(movieId: String){
+        lifecycleScope.launch {
+            viewModel.getMovieDetails(movieId).collectLatest {
+                when(it){
+                    is Resource.Succes -> {
+                        Log.d(TAG, "getMovieDetails() called ${it.data.toString()}")
+                    }
+                    is Resource.Error -> {
+                        Log.d(TAG, "getMovieDetails() called with error ${it.error}")
+                    }
+                    is Resource.Loading -> Log.d(TAG, "getMovieDetails() called")
+                    is Resource.UnAuthorized -> Log.d(TAG, "getMovieDetails() called")
+                }
+            }
+        }
+    }
+
     override fun initViewModels() {
 
     }
@@ -182,5 +201,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun onPause() {
         super.onPause()
         mainHandler.removeCallbacks(autoScroll)
+    }
+
+    private fun onItemClicked(movieId: String) {
+        getMovieDetails(movieId)
     }
 }

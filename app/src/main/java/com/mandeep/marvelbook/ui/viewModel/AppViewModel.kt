@@ -9,6 +9,7 @@ import com.mandeep.marvelbook.data.model.BaseResponse
 import com.mandeep.marvelbook.data.model.Movie
 import com.mandeep.marvelbook.data.remote.RemoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -46,5 +47,8 @@ class AppViewModel @Inject constructor(private val remoteRepository: RemoteRepos
         return remoteRepository.getUpComingMovies().cachedIn(viewModelScope)
     }
 
+    fun getMovieDetails(movieId: String): Flow<Resource<Movie>>{
+      return remoteRepository.getMovieDetails(movieId)
+    }
 
 }
