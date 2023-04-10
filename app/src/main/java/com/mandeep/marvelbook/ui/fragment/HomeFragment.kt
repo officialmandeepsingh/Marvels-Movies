@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -172,22 +173,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-    private  fun getMovieDetails(movieId: String){
-        lifecycleScope.launch {
-            viewModel.getMovieDetails(movieId).collectLatest {
-                when(it){
-                    is Resource.Succes -> {
-                        Log.d(TAG, "getMovieDetails() called ${it.data.toString()}")
-                    }
-                    is Resource.Error -> {
-                        Log.d(TAG, "getMovieDetails() called with error ${it.error}")
-                    }
-                    is Resource.Loading -> Log.d(TAG, "getMovieDetails() called")
-                    is Resource.UnAuthorized -> Log.d(TAG, "getMovieDetails() called")
-                }
-            }
-        }
-    }
+
 
     override fun initViewModels() {
 
@@ -204,6 +190,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun onItemClicked(movieId: String) {
-        getMovieDetails(movieId)
+//        getMovieDetails(movieId)
+        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToMovieDetailFragment(movieId))
     }
 }
